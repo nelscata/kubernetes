@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+  haproxy.cfg: |+
+    global
+      daemon
+      maxconn 256
+
+    defaults
+      mode tcp
+      timeout connect 5000ms
+      timeout client 50000ms
+      timeout server 50000ms
+
+    frontend the-frontend
+      bind *:80
+      default_backend the-backend
+
+    backend the-backend
+      server google.com-80 google.com:80 maxconn 32 check
+      server ibm.fr-80 ibm.fr:80 maxconn 32 check
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2020-04-14T11:52:08Z"
+  name: haproxy
+  namespace: default
+  resourceVersion: "307202"
+  selfLink: /api/v1/namespaces/default/configmaps/haproxy
+  uid: e60076d8-ba1d-47bc-b749-fbd2ae6e68a8
